@@ -1,0 +1,164 @@
+{
+  "ethlib_commit": "bf91b3b058ed8553e3e030ba8254a6eeb517221b",
+  "exports": [
+    "eth_bls_aggregate_pubkeys",
+    "eth_bls_const_bytes_per_pubkey",
+    "eth_bls_const_bytes_per_signature",
+    "eth_bls_fast_aggregate_verify",
+    "eth_kzg_blob_to_kzg_commitment",
+    "eth_kzg_compute_blob_kzg_proof",
+    "eth_kzg_compute_cells",
+    "eth_kzg_compute_cells_and_kzg_proofs",
+    "eth_kzg_compute_challenge",
+    "eth_kzg_compute_kzg_proof",
+    "eth_kzg_compute_verify_cell_kzg_proof_batch_challenge",
+    "eth_kzg_const_bytes_per_blob",
+    "eth_kzg_const_bytes_per_cell",
+    "eth_kzg_const_bytes_per_commitment",
+    "eth_kzg_const_bytes_per_field_element",
+    "eth_kzg_const_bytes_per_proof",
+    "eth_kzg_const_cells_per_ext_blob",
+    "eth_kzg_const_field_elements_per_blob",
+    "eth_kzg_const_field_elements_per_cell",
+    "eth_kzg_recover_cells_and_kzg_proofs",
+    "eth_kzg_verify_blob_kzg_proof",
+    "eth_kzg_verify_blob_kzg_proof_batch",
+    "eth_kzg_verify_cell_kzg_proof_batch",
+    "eth_kzg_verify_kzg_proof",
+    "eth_xmss_const_code_length",
+    "eth_xmss_const_digest_len",
+    "eth_xmss_const_log_lifetime",
+    "eth_xmss_const_message_len",
+    "eth_xmss_const_pub_key_size",
+    "eth_xmss_const_public_param_len",
+    "eth_xmss_const_randomness_len",
+    "eth_xmss_const_seed_len",
+    "eth_xmss_const_sig_size",
+    "eth_xmss_key_gen",
+    "eth_xmss_sign",
+    "eth_xmss_verify"
+  ],
+  "rows": [
+    {
+      "area": "consensus",
+      "primitive": "BLS12-381 FastAggregateVerify (eth_ wrapper)",
+      "spec": "consensus-specs bls.md",
+      "evidence": "export:eth_bls_fast_aggregate_verify",
+      "covered": true
+    },
+    {
+      "area": "consensus",
+      "primitive": "BLS12-381 aggregate public keys",
+      "spec": "consensus-specs bls.md",
+      "evidence": "export:eth_bls_aggregate_pubkeys",
+      "covered": true
+    },
+    {
+      "area": "consensus",
+      "primitive": "BLS12-381 signing and key generation",
+      "spec": "consensus-specs bls.md",
+      "evidence": "export:eth_bls_sign",
+      "covered": false
+    },
+    {
+      "area": "consensus",
+      "primitive": "KZG commitments, blob proofs (EIP-4844)",
+      "spec": "consensus-specs deneb polynomial-commitments.md",
+      "evidence": "export:eth_kzg_verify_blob_kzg_proof",
+      "covered": true
+    },
+    {
+      "area": "consensus",
+      "primitive": "KZG cells and recovery (PeerDAS, EIP-7594)",
+      "spec": "consensus-specs fulu polynomial-commitments-sampling.md",
+      "evidence": "export:eth_kzg_recover_cells_and_kzg_proofs",
+      "covered": true
+    },
+    {
+      "area": "consensus",
+      "primitive": "XMSS hash-based signatures (post-quantum)",
+      "spec": "leanSig / leanSpec",
+      "evidence": "export:eth_xmss_verify",
+      "covered": true
+    },
+    {
+      "area": "consensus",
+      "primitive": "SHA-256",
+      "spec": "FIPS 180-4",
+      "evidence": "file:EthLib/Cryptography/Hash/Sha256.lean",
+      "covered": true
+    },
+    {
+      "area": "consensus",
+      "primitive": "SSZ encoding (pinned dependency)",
+      "spec": "consensus-specs ssz/simple-serialize.md",
+      "evidence": "dependency:ssz",
+      "covered": true
+    },
+    {
+      "area": "consensus",
+      "primitive": "Beacon state transition",
+      "spec": "consensus-specs beacon-chain.md",
+      "evidence": "file:EthLib/Consensus",
+      "covered": false
+    },
+    {
+      "area": "consensus",
+      "primitive": "Fork choice",
+      "spec": "consensus-specs fork-choice.md",
+      "evidence": "file:EthLib/ForkChoice",
+      "covered": false
+    },
+    {
+      "area": "networking",
+      "primitive": "libp2p unsigned varint",
+      "spec": "multiformats unsigned-varint",
+      "evidence": "file:EthLib/Networking/Encoding/Varint.lean",
+      "covered": true
+    },
+    {
+      "area": "execution",
+      "primitive": "Keccak-256",
+      "spec": "FIPS 202 / Yellow Paper",
+      "evidence": "file:EthLib/Cryptography/Hash/Keccak.lean",
+      "covered": false
+    },
+    {
+      "area": "execution",
+      "primitive": "secp256k1 ECDSA / ecrecover",
+      "spec": "Yellow Paper, SEC 2",
+      "evidence": "file:EthLib/Cryptography/Secp256k1",
+      "covered": false
+    },
+    {
+      "area": "execution",
+      "primitive": "RLP",
+      "spec": "Yellow Paper appendix B",
+      "evidence": "file:EthLib/Encoding/Rlp.lean",
+      "covered": false
+    },
+    {
+      "area": "execution",
+      "primitive": "Merkle-Patricia trie",
+      "spec": "Yellow Paper appendix D",
+      "evidence": "file:EthLib/Trie",
+      "covered": false
+    },
+    {
+      "area": "execution",
+      "primitive": "EVM",
+      "spec": "Yellow Paper",
+      "evidence": "file:EthLib/Evm",
+      "covered": false
+    }
+  ],
+  "hygiene": {
+    "sorry": [],
+    "native_decide": [
+      "EthLib/Cryptography/Proofs/Xmss/Sign.lean:154",
+      "EthLib/Cryptography/Proofs/Xmss/KeyGen.lean:76"
+    ],
+    "axiom": []
+  },
+  "time_and_io": []
+}

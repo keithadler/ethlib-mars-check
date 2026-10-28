@@ -1,0 +1,14 @@
+{
+  "ethlib_commit": "bf91b3b058ed8553e3e030ba8254a6eeb517221b",
+  "toolchain": "leanprover/lean4:v4.29.1 with Mathlib v4.29.1 cache",
+  "command": "lake build",
+  "build_ok": false,
+  "jobs_finished": 3543,
+  "jobs_total": 3557,
+  "errors_in_log": 0,
+  "proof_modules_finished": {"Bls_Kzg_Xmss": 42},
+  "not_finished": "EthLib.Cryptography.Proofs.Hash.Blake2s stalled: about 50 minutes with the machine in heavy swap, then three direct retries showed no CPU use. The modules that import it, including the Proofs aggregate, were not reached.",
+  "not_run": ["lake exe check-decls", "pytest of the Python bindings"],
+  "why_not_run": "they need the finished build; a later retry of lake was declined by the session's permission classifier",
+  "reading": "No error in 3,543 finished jobs. This is not a completed proof check."
+}

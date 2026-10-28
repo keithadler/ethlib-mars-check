@@ -1,0 +1,131 @@
+{
+  "consensus_specs_commit": "8a80ffa82bd49aac0dd6db17f9e8150aa257fbc2",
+  "values": {
+    "SLOT_DURATION_MS": {
+      "value": 12000,
+      "source": "configs/mainnet.yaml:74"
+    },
+    "ATTESTATION_DUE_BPS": {
+      "value": 3333,
+      "source": "configs/mainnet.yaml:86"
+    },
+    "AGGREGATE_DUE_BPS": {
+      "value": 6667,
+      "source": "configs/mainnet.yaml:88"
+    },
+    "INACTIVITY_SCORE_BIAS": {
+      "value": 4,
+      "source": "configs/mainnet.yaml:123"
+    },
+    "EJECTION_BALANCE": {
+      "value": 16000000000,
+      "source": "configs/mainnet.yaml:127"
+    },
+    "SAMPLES_PER_SLOT": {
+      "value": 8,
+      "source": "configs/mainnet.yaml:212"
+    },
+    "CUSTODY_REQUIREMENT": {
+      "value": 4,
+      "source": "configs/mainnet.yaml:214"
+    },
+    "NUMBER_OF_CUSTODY_GROUPS": {
+      "value": 128,
+      "source": "configs/mainnet.yaml:208"
+    },
+    "MAXIMUM_GOSSIP_CLOCK_DISPARITY": {
+      "value": 500,
+      "source": "configs/mainnet.yaml:180"
+    },
+    "MAX_BLOBS_PER_BLOCK_LATEST": {
+      "value": 21,
+      "source": "configs/mainnet.yaml:246"
+    },
+    "SLOTS_PER_EPOCH": {
+      "value": 32,
+      "source": "presets/mainnet/phase0.yaml:34"
+    },
+    "MIN_ATTESTATION_INCLUSION_DELAY": {
+      "value": 1,
+      "source": "presets/mainnet/phase0.yaml:32"
+    },
+    "EPOCHS_PER_SYNC_COMMITTEE_PERIOD": {
+      "value": 256,
+      "source": "presets/mainnet/altair.yaml:17"
+    },
+    "INACTIVITY_PENALTY_QUOTIENT_BELLATRIX": {
+      "value": 16777216,
+      "source": "presets/mainnet/bellatrix.yaml:6"
+    },
+    "FIELD_ELEMENTS_PER_BLOB": {
+      "value": 4096,
+      "source": "presets/mainnet/deneb.yaml:16"
+    },
+    "NUMBER_OF_COLUMNS": {
+      "value": 128,
+      "source": "presets/mainnet/fulu.yaml:17"
+    },
+    "MAX_EFFECTIVE_BALANCE": {
+      "value": 32000000000,
+      "source": "presets/mainnet/phase0.yaml:25"
+    },
+    "TIMELY_SOURCE_WEIGHT": {
+      "value": 14,
+      "source": "specs/altair/beacon-chain.md:139"
+    },
+    "TIMELY_TARGET_WEIGHT": {
+      "value": 26,
+      "source": "specs/altair/beacon-chain.md:140"
+    },
+    "TIMELY_HEAD_WEIGHT": {
+      "value": 14,
+      "source": "specs/altair/beacon-chain.md:141"
+    },
+    "WEIGHT_DENOMINATOR": {
+      "value": 64,
+      "source": "specs/altair/beacon-chain.md:144"
+    },
+    "MIN_EPOCHS_TO_INACTIVITY_PENALTY": {
+      "value": 4,
+      "source": "specs/phase0/beacon-chain.md:621"
+    }
+  },
+  "rules": {
+    "source_timely": {
+      "source": "specs/deneb/beacon-chain.md:350",
+      "code": "inclusion_delay <= integer_squareroot(SLOTS_PER_EPOCH)"
+    },
+    "head_timely": {
+      "source": "specs/deneb/beacon-chain.md:355",
+      "code": "inclusion_delay == MIN_ATTESTATION_INCLUSION_DELAY"
+    },
+    "source_must_match": {
+      "source": "specs/deneb/beacon-chain.md:347",
+      "code": "assert is_matching_source"
+    },
+    "source_is_current_or_previous_justified": {
+      "source": "specs/deneb/beacon-chain.md:334",
+      "code": "justified_checkpoint = state.previous_justified_checkpoint"
+    },
+    "inclusion_window": {
+      "source": "specs/electra/beacon-chain.md:1646",
+      "code": "assert data.target.epoch in (get_previous_epoch(state), get_current_epoch(state))"
+    },
+    "min_inclusion_delay": {
+      "source": "specs/electra/beacon-chain.md:1648",
+      "code": "assert data.slot + MIN_ATTESTATION_INCLUSION_DELAY <= state.slot"
+    },
+    "leak_trigger": {
+      "source": "specs/phase0/beacon-chain.md:2033",
+      "code": "return get_finality_delay(state) > MIN_EPOCHS_TO_INACTIVITY_PENALTY"
+    },
+    "inactivity_score_bias": {
+      "source": "specs/altair/beacon-chain.md:766",
+      "code": "state.inactivity_scores[index] += INACTIVITY_SCORE_BIAS"
+    },
+    "attestation_due": {
+      "source": "specs/phase0/fork-choice.md:584",
+      "code": "return get_slot_component_duration_ms(ATTESTATION_DUE_BPS)"
+    }
+  }
+}
