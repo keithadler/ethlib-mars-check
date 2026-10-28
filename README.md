@@ -41,6 +41,32 @@ What does work from Mars: a light client (it follows Earth at most 0.35 h behind
 committee changes every 27.3 h), and ordinary transactions, slowly. That is the speed of light, not a
 design flaw.
 
+## Proved in Lean
+
+The core of the Mars result is now a theorem, not just a model. `lean/` is a small core-Lean project
+(no Mathlib, Lean 4.29.1). Its definitions restate the specification's attestation rules; its inputs
+are generated, not typed in (`tools/gen_lean.py` writes `Spec.lean` from the spec constants and
+`Ephemeris.lean` from the NASA/JPL data). It proves:
+
+| theorem | statement |
+| --- | --- |
+| `no_valid_vote_past_376s` | past 376 s one-way delay, no slot of an epoch has a vote that can count |
+| `valid_vote_at_376s` | the bound is exact: at 376 s the last slot still has one |
+| `head_vote_needs_8s`, `source_vote_needs_56s` | a head vote needs the message to arrive within 8 s, a source vote within 56 s |
+| `never_head_or_source_vote` | on no day of the ephemeris does a Mars validator get either |
+| `days_with_a_valid_vote` | a vote can count on exactly 119 of the 1,527 days |
+| `at_most_5_valid_slots`, `reward_at_most_130_of_1728` | at 323 s or more, at most 5 of 32 slots count, at most 130/1728 (7.5%) of the attestation reward |
+
+Checked three ways: `lake build` (axioms: `propext`, `Quot.sound` only, no `sorry`, no `native_decide`),
+Lean Studio's `verify`, which re-checks all 40 declarations with Tenet, an independent Lean kernel
+(40 verified, 0 resting on an assumption, 0 rejected), and `tests/test_lean_data.py`, which confirms
+the Lean inputs and stated numbers equal the Python model's.
+
+What this does and does not prove: it proves the consequences of the rules as written in
+`lean/MarsCheck/Rules.lean`. Whether those rules are the specification's rules is the author's reading
+of the specification text, with the generous choice wherever it leaves room. It is not checked against
+an executable spec. The Lean is the author's own, separate from EthLib's.
+
 ## How the Mars part works
 
 Nothing is typed in by hand.
@@ -66,9 +92,10 @@ epoch begins; a block proposer takes a vote right up to the start of its slot), 
 
 ## What this does not show
 
-* **No executable-spec run.** The model is a reading of the specification text and constants. I did
-  not run it against the consensus-specs executable Python spec, so a subtle rule I misread would not
-  be caught by that. The numbers cite exact spec lines so it can be checked by eye.
+* **No executable-spec run.** The model and the Lean proofs are a reading of the specification text
+  and constants. I did not run them against the consensus-specs executable Python spec, so a subtle
+  rule I misread would not be caught by that. The numbers cite exact spec lines so it can be checked
+  by eye.
 * **It assumes the chain finalizes every epoch**, which is the normal state. During a stall, the
   source-freshness rule loosens.
 * **The leak figure applies only if Mars held more than a third of the stake.** Then the chain stops
@@ -99,6 +126,8 @@ verification as unfinished, not as passed (`results/ethlib_verification.json`).
 ## Run it
 
 ```sh
+cd lean && lake build                       # the proofs (core Lean, no Mathlib)
+cd ..
 python3 -m venv .venv && .venv/bin/pip install matplotlib numpy pytest
 git clone https://github.com/ethereum/consensus-specs      # then check out the pinned commit
 git clone https://github.com/ethereum/EthLib

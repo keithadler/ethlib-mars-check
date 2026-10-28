@@ -26,6 +26,8 @@ A vote's source must match the latest justified checkpoint, which moves every 6.
 
 On the other 8%, at most 16% of its votes count, for 7.5% of the full reward. No head or source vote, ever.
 
+I also proved the core of this in Lean (core Lean, no Mathlib, re-checked with an independent kernel): no vote counts past 376 seconds, the bound is exact, a head vote needs 8 seconds, a source vote 56, and a vote can count on exactly 119 of 1,527 days. The theorems are about my reading of the spec's rules, not an executable spec.
+
 WHAT STILL WORKS
 
 A light client: it runs at most 0.35 hours behind, and its committee rotates every 27.3. Ordinary transactions too, seen finalized from Mars in 24 to 62 minutes. That is the speed of light, not a flaw.
@@ -36,8 +38,18 @@ Data availability sampling: one sample is a 646 second round trip at best, and t
 
 WHAT I DID NOT DO
 
-I did not run the model against the executable spec. It is my reading of the spec text, with the generous reading chosen so a "no" is firm. The link rates are one orbiter's. It models Ethereum's consensus timing, not rollups or a design built for the distance.
+I did not run the model or the proofs against the executable spec. They are my reading of the spec text, with the generous reading chosen so a "no" is firm. The link rates are one orbiter's. It models Ethereum's consensus timing, not rollups or a design built for the distance.
 
 I also tried to rebuild EthLib's proofs. 3,543 of 3,557 jobs finished with no error, then one file stalled on my 12 GB machine and I could not get it through. So I am not claiming I re-verified them.
 
 Repo, data, tests and the four charts: github.com/keithadler/ethlib-mars-check
+
+Hey diehard Ethereum people, I have a task for you.
+
+I took EthLib and showed there's work to be done before money can move between Earth and Mars and back. Transactions can cross, slowly. Validating from Mars is the part that needs real work.
+
+If this was useful and you feel like saying thanks, I'd happily accept a little ETH (it'd be my first).
+
+Mars is far, but my wallet is right here:
+
+0x88adFCaa8FFaC62618b34F87FBede6394C829B1e

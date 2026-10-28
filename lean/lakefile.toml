@@ -1,0 +1,5 @@
+name = "MarsCheck"
+defaultTargets = ["MarsCheck"]
+
+[[lean_lib]]
+name = "MarsCheck"
